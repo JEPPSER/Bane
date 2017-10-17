@@ -82,7 +82,7 @@ public class PlayerScript : MonoBehaviour {
         mouse_pos.y = mouse_pos.y - object_pos.y / 2;
         float angle = Mathf.Atan2(mouse_pos.y, mouse_pos.x) * Mathf.Rad2Deg; // Calculate angle
 
-        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90)); // Rotate player
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle)); // Rotate player
         components[0].transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0)); // Rotate camera
     }
 }
