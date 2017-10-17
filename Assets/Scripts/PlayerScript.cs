@@ -2,55 +2,87 @@
 
 public class PlayerScript : MonoBehaviour {
 
-    private string[] keys = { "w", "a", "s", "d" };
-    private bool[] directions = { false, false, false, false };
     private float x = 0;
     private float y = 0;
-    private float sensitivity = 5f;
-    private float angle = 0f;
+    private float sensitivity = 3f;
+    private int[] res;
 
-    // Use this for initialization
-    void Start () {
+    [SerializeField]
+    Behaviour[] components;
 
-	}
-	
-	// Update is called once per frame
-	void Update () {
-
-        for(int i=0; i < keys.Length; i++)
-        {
-            directions[i] = Input.GetKey(keys[i]);
-        }
-
-        move(directions);
+    // Update is called once per frame
+    void FixedUpdate () {
+        move();
         rotate();
 	}
 
-    private void move(bool[] directions)
+    private void Start()
     {
-        if (directions[0])
+        // Getting the resolution of the window.
+        res = new int[2];
+        res[0] = Screen.width;
+        res[1] = Screen.height;
+    }
+
+    private void move()
+    {
+        if(Input.GetKey("a") && Input.GetKey("d"))
+        {
+            // No movement
+        }
+        else if(Input.GetKey("w") && Input.GetKey("s"))
+        {
+            // No movement
+        }
+        else if(Input.GetKey("w") && Input.GetKey("a"))
+        {
+            x -= Mathf.Atan(1);
+            y += Mathf.Atan(1);
+        }
+        else if (Input.GetKey("w") && Input.GetKey("d"))
+        {
+            x += Mathf.Atan(1);
+            y += Mathf.Atan(1);
+        }
+        else if (Input.GetKey("s") && Input.GetKey("a"))
+        {
+            x -= Mathf.Atan(1);
+            y -= Mathf.Atan(1);
+        }
+        else if (Input.GetKey("s") && Input.GetKey("d"))
+        {
+            x += Mathf.Atan(1);
+            y -= Mathf.Atan(1);
+        }
+        else if (Input.GetKey("w"))
         {
             y += 1;
         }
-        if (directions[1])
+        else if (Input.GetKey("a"))
         {
             x -= 1;
         }
-        if (directions[2])
+        else if (Input.GetKey("s"))
         {
             y -= 1;
         }
-        if (directions[3])
+        else if (Input.GetKey("d"))
         {
             x += 1;
         }
+
         transform.position = new Vector3(x, y);
     }
 
     private void rotate()
     {
-        float xRot = Input.GetAxis("Mouse X");
-        angle += xRot;
-        transform.rotation = Quaternion.Euler(new Vector3(0, 0, -angle));
+        Vector3 mouse_pos = Input.mousePosition; // Mouse position in the window.
+        Vector3 object_pos = new Vector3((float) res[0], (float) res[1]); // Middle of the window
+        mouse_pos.x = mouse_pos.x - object_pos.x / 2;
+        mouse_pos.y = mouse_pos.y - object_pos.y / 2;
+        float angle = Mathf.Atan2(mouse_pos.y, mouse_pos.x) * Mathf.Rad2Deg; // Calculate angle
+
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90)); // Rotate player
+        components[0].transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0)); // Rotate camera
     }
 }
