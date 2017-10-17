@@ -4,8 +4,11 @@ public class PlayerScript : MonoBehaviour {
 
     private float x = 0;
     private float y = 0;
-    private float sensitivity = 3f;
     private int[] res;
+    private string lastXDir = "";
+    private string lastYDir = "";
+
+    public float moveSpeed;
 
     [SerializeField]
     Behaviour[] components;
@@ -24,51 +27,79 @@ public class PlayerScript : MonoBehaviour {
         res[1] = Screen.height;
     }
 
+    // TODO: Try to clean this up somehow. Don't sacrifice the
+    // movement for good code.
     private void move()
     {
-        if(Input.GetKey("a") && Input.GetKey("d"))
+        if(Input.GetKey("a") && Input.GetKey("d")) // Both left and right pressed.
         {
-            // No movement
+            if(lastXDir == "a")
+            {
+                x += Mathf.Atan(1) * Time.deltaTime * moveSpeed;
+            }
+            else if(lastXDir == "d")
+            {
+                x -= Mathf.Atan(1) * Time.deltaTime * moveSpeed;
+            }
         }
-        else if(Input.GetKey("w") && Input.GetKey("s"))
+        else if(Input.GetKey("w") && Input.GetKey("s")) // Both up and down pressed.
         {
-            // No movement
+            if (lastYDir == "w")
+            {
+                y -= Mathf.Atan(1) * Time.deltaTime * moveSpeed;
+            }
+            else if (lastYDir == "s")
+            {
+                y += Mathf.Atan(1) * Time.deltaTime * moveSpeed;
+            }
         }
-        else if(Input.GetKey("w") && Input.GetKey("a"))
+        else if(Input.GetKey("w") && Input.GetKey("a")) // Both up and left pressed.
         {
-            x -= Mathf.Atan(1);
-            y += Mathf.Atan(1);
+            x -= Mathf.Atan(1) * Time.deltaTime * moveSpeed;
+            y += Mathf.Atan(1) * Time.deltaTime * moveSpeed;
+            lastYDir = "w";
+            lastXDir = "a";
         }
-        else if (Input.GetKey("w") && Input.GetKey("d"))
+        else if (Input.GetKey("w") && Input.GetKey("d")) // Both up and right pressed.
         {
-            x += Mathf.Atan(1);
-            y += Mathf.Atan(1);
+            x += Mathf.Atan(1) * Time.deltaTime * moveSpeed;
+            y += Mathf.Atan(1) * Time.deltaTime * moveSpeed;
+            lastXDir = "d";
+            lastYDir = "w";
         }
-        else if (Input.GetKey("s") && Input.GetKey("a"))
+        else if (Input.GetKey("s") && Input.GetKey("a")) // Both down and left pressed.
         {
-            x -= Mathf.Atan(1);
-            y -= Mathf.Atan(1);
+            x -= Mathf.Atan(1) * Time.deltaTime * moveSpeed;
+            y -= Mathf.Atan(1) * Time.deltaTime * moveSpeed;
+            lastXDir = "a";
+            lastYDir = "s";
         }
-        else if (Input.GetKey("s") && Input.GetKey("d"))
+        else if (Input.GetKey("s") && Input.GetKey("d")) // Both down and right pressed.
         {
-            x += Mathf.Atan(1);
-            y -= Mathf.Atan(1);
+            x += Mathf.Atan(1) * Time.deltaTime * moveSpeed;
+            y -= Mathf.Atan(1) * Time.deltaTime * moveSpeed;
+            lastXDir = "d";
+            lastYDir = "s";
         }
-        else if (Input.GetKey("w"))
+        else if (Input.GetKey("w")) // Only up pressed.
         {
-            y += 1;
+            y += 1 * Time.deltaTime * moveSpeed;
+            lastYDir = "w";
         }
-        else if (Input.GetKey("a"))
+        else if (Input.GetKey("a")) // Only left pressed.
         {
-            x -= 1;
+            x -= 1 * Time.deltaTime * moveSpeed;
+            lastXDir = "a";
         }
-        else if (Input.GetKey("s"))
+        else if (Input.GetKey("s")) // Only down pressed.
         {
-            y -= 1;
+            y -= 1 * Time.deltaTime * moveSpeed;
+            lastYDir = "s";
         }
-        else if (Input.GetKey("d"))
+        else if (Input.GetKey("d")) // Only right pressed.
         {
-            x += 1;
+            x += 1 * Time.deltaTime * moveSpeed;
+            lastXDir = "d";
         }
 
         transform.position = new Vector3(x, y);
