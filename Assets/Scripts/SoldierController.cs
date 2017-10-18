@@ -44,16 +44,25 @@ public class SoldierController : MonoBehaviour {
             moveSpeed = 4;
         }
 
-        // Get the key inputs and move the soldier.
-        for (int i = 0; i < keys.GetLength(0); i++)
+        // Get direction key inputs and move soldier.
+        if (Input.GetKey(keys[0]))
         {
-            if (Input.GetKey(keys[i]))
-            {
-                y = Time.deltaTime * moveSpeed * Mathf.Sin((angle + 90 - i * 90) * Mathf.Deg2Rad);
-                x = -Time.deltaTime * moveSpeed * Mathf.Cos((angle + 90 - i * 90) * Mathf.Deg2Rad);
-                transform.Translate(new Vector3(x, y, 0f));
-            }
+            y = moveSpeed * Time.deltaTime;
         }
+        if (Input.GetKey(keys[1]))
+        {
+            x = -moveSpeed * Time.deltaTime;
+        }
+        if (Input.GetKey(keys[2]))
+        {
+            y = -moveSpeed * Time.deltaTime;
+        }
+        if (Input.GetKey(keys[3]))
+        {
+            x = moveSpeed * Time.deltaTime;
+        }
+
+        transform.position = new Vector3(transform.position.x + x, transform.position.y + y, 0f);
 
         moveSpeed = 5;
     }
