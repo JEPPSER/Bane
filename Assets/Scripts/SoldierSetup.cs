@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
-public class PlayerSetup : NetworkBehaviour {
+public class SoldierSetup : NetworkBehaviour {
 
     [SerializeField]
     Behaviour[] componentsToDisable;
