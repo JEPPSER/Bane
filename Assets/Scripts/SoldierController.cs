@@ -6,6 +6,8 @@ public class SoldierController : MonoBehaviour {
     private string[] keys = {"w", "a", "s", "d"}; // Movement keys
     private int[] res = {Screen.width, Screen.height}; // Window resolution
 
+    private Animator anim;
+
     public float moveSpeed = 5f;
 
     [SerializeField]
@@ -19,7 +21,7 @@ public class SoldierController : MonoBehaviour {
 
     private void Start()
     {
-
+        anim = GetComponent<Animator>();
     }
 
     // Soldier movement on the x and y axis.
@@ -47,19 +49,27 @@ public class SoldierController : MonoBehaviour {
         // Get direction key inputs and move soldier.
         if (Input.GetKey(keys[0]))
         {
-            y = moveSpeed * Time.deltaTime;
+            y += moveSpeed * Time.deltaTime;
         }
         if (Input.GetKey(keys[1]))
         {
-            x = -moveSpeed * Time.deltaTime;
+            x -= moveSpeed * Time.deltaTime;
         }
         if (Input.GetKey(keys[2]))
         {
-            y = -moveSpeed * Time.deltaTime;
+            y -= moveSpeed * Time.deltaTime;
         }
         if (Input.GetKey(keys[3]))
         {
-            x = moveSpeed * Time.deltaTime;
+            x += moveSpeed * Time.deltaTime;
+        }
+
+        if(x == 0 && y == 0)
+        {
+            anim.SetBool("isMoving", false);
+        } else
+        {
+            anim.SetBool("isMoving", true);
         }
 
         transform.position = new Vector3(transform.position.x + x, transform.position.y + y, 0f);
