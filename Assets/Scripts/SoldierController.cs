@@ -5,6 +5,16 @@ public class SoldierController : MonoBehaviour {
     private float angle = 0f;
     private string[] keys = {"w", "a", "s", "d"}; // Movement keys
     private int[] res = {Screen.width, Screen.height}; // Window resolution
+    private int currentWeapon = 0;
+
+    private GameObject primaryWeapon;
+    private Weapon primaryWeaponScript;
+
+    private GameObject secondaryWeapon;
+    private Weapon secondaryWeaponScript;
+
+    private GameObject[] weapons = new GameObject[2];
+    private Weapon[] weaponScripts = new Weapon[2];
 
     private Animator anim;
 
@@ -17,11 +27,38 @@ public class SoldierController : MonoBehaviour {
     void FixedUpdate () {
         move();  
         rotate();
+        use();
+        shoot();
 	}
 
     private void Start()
     {
         anim = GetComponent<Animator>();
+        weapons[0] = primaryWeapon;
+        weapons[1] = secondaryWeapon;
+        weaponScripts[0] = primaryWeaponScript;
+        weaponScripts[1] = secondaryWeaponScript;
+    }
+
+    // Shoot gun
+    private void shoot()
+    {
+        if (Input.GetMouseButtonDown(0) && primaryWeapon != null)
+        {
+            primaryWeaponScript.Shoot();
+        }
+    }
+
+    // When use button is pressed.
+    private void use()
+    {
+        if (Input.GetKeyDown("f"))
+        {   
+            primaryWeapon = (GameObject) Instantiate(Resources.Load("Weapons/p2000"));
+            primaryWeapon.transform.position = this.transform.position;
+            primaryWeapon.transform.SetParent(transform.Find("PrimaryWeapon"));
+            primaryWeaponScript = primaryWeapon.GetComponent<Weapon>();
+        } 
     }
 
     // Soldier movement on the x and y axis.
