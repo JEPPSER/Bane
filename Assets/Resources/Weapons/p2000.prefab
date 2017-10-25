@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4561759938521958}
   - component: {fileID: 212819320192352598}
   - component: {fileID: 114680136683918202}
+  - component: {fileID: 58180184869888560}
   m_Layer: 0
   m_Name: p2000
   m_TagString: Untagged
@@ -35,12 +36,27 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1423774952225674}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.39, y: 0, z: 0}
+  m_LocalPosition: {x: 1.15, y: -1.81, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &58180184869888560
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1423774952225674}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!114 &114680136683918202
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -55,6 +71,7 @@ MonoBehaviour:
   clipSize: 15
   reloadTime: 3000
   damage: 30
+  range: 0
 --- !u!212 &212819320192352598
 SpriteRenderer:
   m_ObjectHideFlags: 1

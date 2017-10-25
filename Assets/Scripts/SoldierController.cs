@@ -27,11 +27,10 @@ public class SoldierController : MonoBehaviour {
     void FixedUpdate () {
         move();  
         rotate();
-        use();
         shoot();
 	}
 
-    private void Start()
+    void Start()
     {
         anim = GetComponent<Animator>();
         weapons[0] = primaryWeapon;
@@ -50,15 +49,18 @@ public class SoldierController : MonoBehaviour {
     }
 
     // When use button is pressed.
-    private void use()
+    public void pickUpWeapon(Weapon weapon)
     {
-        if (Input.GetKeyDown("f"))
-        {   
-            primaryWeapon = (GameObject) Instantiate(Resources.Load("Weapons/p2000"));
-            primaryWeapon.transform.position = this.transform.position;
-            primaryWeapon.transform.SetParent(transform.Find("PrimaryWeapon"));
-            primaryWeaponScript = primaryWeapon.GetComponent<Weapon>();
-        } 
+        if (primaryWeapon != null)
+        {
+            primaryWeapon.transform.SetParent(transform.parent); // Drop current weapon.
+            Physics2D.IgnoreCollision(primaryWeapon.GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
+        }
+        primaryWeapon = weapon.gameObject;
+        primaryWeapon.transform.position = this.transform.position;
+        primaryWeapon.transform.SetParent(transform.Find("PrimaryWeapon"));
+        primaryWeaponScript = primaryWeapon.GetComponent<Weapon>();
+         
     }
 
     // Soldier movement on the x and y axis.
