@@ -60,7 +60,7 @@ public class SoldierController : MonoBehaviour {
         primaryWeapon.transform.position = this.transform.position;
         primaryWeapon.transform.SetParent(transform.Find("PrimaryWeapon"));
         primaryWeaponScript = primaryWeapon.GetComponent<Weapon>();
-         
+        anim.SetInteger("weapon", 1);
     }
 
     // Soldier movement on the x and y axis.
