@@ -4,6 +4,7 @@ public class SoldierController : MonoBehaviour {
 
     private float angle = 0f;
     private string[] keys = {"w", "a", "s", "d"}; // Movement keys
+    private string[] weaponStrings = { "PrimaryWeapon", "SecondaryWeapon" };
     private int[] res = {Screen.width, Screen.height}; // Window resolution
     private int currentWeapon = 0;
 
@@ -28,6 +29,7 @@ public class SoldierController : MonoBehaviour {
         move();  
         rotate();
         shoot();
+        switchWeapon();
 	}
 
     void Start()
@@ -39,6 +41,15 @@ public class SoldierController : MonoBehaviour {
         weaponScripts[1] = secondaryWeaponScript;
     }
 
+    private void switchWeapon()
+    {
+        if (Input.GetKeyDown("q"))
+        {
+            currentWeapon = 1 - currentWeapon;
+            anim.SetInteger("weapon", weaponScripts[currentWeapon].id);
+        }
+    }
+
     // Shoot gun
     private void shoot()
     {
@@ -48,21 +59,36 @@ public class SoldierController : MonoBehaviour {
         }
     }
 
+    private void addWeaponToInvetory(int index, Weapon weapon)
+    {
+        weapons[index] = weapon.gameObject;
+        weapons[index].transform.position = this.transform.position;
+        weapons[index].transform.SetParent(transform.Find(weaponStrings[index]));
+        weaponScripts[index] = weapon;
+        weapon.GetComponent<SpriteRenderer>().enabled = false;
+    }
+
     // When use button is pressed.
     public void pickUpWeapon(Weapon weapon)
-    {
-        if (primaryWeapon != null)
+    {   
+        if(weapons[currentWeapon] == null)
         {
-            primaryWeapon.transform.SetParent(transform.parent); // Drop current weapon.
-            primaryWeaponScript.GetComponent<SpriteRenderer>().enabled = true;
-            Physics2D.IgnoreCollision(primaryWeapon.GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
+            addWeaponToInvetory(currentWeapon, weapon);
+            anim.SetInteger("weapon", weapon.id);
         }
-        primaryWeapon = weapon.gameObject;
-        primaryWeapon.transform.position = this.transform.position;
-        primaryWeapon.transform.SetParent(transform.Find("PrimaryWeapon"));
-        primaryWeaponScript = weapon;
-        anim.SetInteger("weapon", weapon.id);
-        weapon.GetComponent<SpriteRenderer>().enabled = false;
+        else if(weapons[1 - currentWeapon] == null)
+        {
+            addWeaponToInvetory(1 - currentWeapon, weapon);
+        }
+        else
+        {
+            weapons[currentWeapon].transform.SetParent(transform.parent);
+            weaponScripts[currentWeapon].GetComponent<SpriteRenderer>().enabled = true;
+            Physics2D.IgnoreCollision(weapons[currentWeapon].GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
+
+            addWeaponToInvetory(currentWeapon, weapon);
+            anim.SetInteger("weapon", weapon.id);
+        }        
     }
 
     // Soldier movement on the x and y axis.

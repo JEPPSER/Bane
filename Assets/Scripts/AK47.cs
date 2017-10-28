@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class AK47 : Weapon {
 
-	// Use this for initialization
 	void Start () {
         this.id = 2;
 	}
