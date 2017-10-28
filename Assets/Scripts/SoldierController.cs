@@ -54,13 +54,15 @@ public class SoldierController : MonoBehaviour {
         if (primaryWeapon != null)
         {
             primaryWeapon.transform.SetParent(transform.parent); // Drop current weapon.
+            primaryWeaponScript.GetComponent<SpriteRenderer>().enabled = true;
             Physics2D.IgnoreCollision(primaryWeapon.GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
         }
         primaryWeapon = weapon.gameObject;
         primaryWeapon.transform.position = this.transform.position;
         primaryWeapon.transform.SetParent(transform.Find("PrimaryWeapon"));
-        primaryWeaponScript = primaryWeapon.GetComponent<Weapon>();
-        anim.SetInteger("weapon", 1);
+        primaryWeaponScript = weapon;
+        anim.SetInteger("weapon", weapon.id);
+        weapon.GetComponent<SpriteRenderer>().enabled = false;
     }
 
     // Soldier movement on the x and y axis.

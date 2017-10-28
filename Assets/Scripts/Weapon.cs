@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour {
 
+    public int id;
+
     public int clipSize;
     public int reloadTime;
     public int damage;
